@@ -1,0 +1,15 @@
+.tempUnit{
+    content: "\2103";
+}
+
+#todayWeather #today {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#spaces {
+    margin-left: 10px;
+}
+
+
+
