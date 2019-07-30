@@ -6,15 +6,28 @@ html {
     content: "\2103";
 }
 
+.currWeatherLine {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
 #overviewinfo {
     display: flex;
     flex-direction: column;
     font-family: 'Tangerine', cursive;
     font-weight: bold;
-    font-size: xx-large;
+    font-size: 66px;
+    font-size: 3.5vw;
     letter-spacing: 1px;
     text-align: center;
     margin-bottom: 30px;
+}
+
+.currweather {
+    display: flex;
+    flex-direction: column;
+    align-items:center;
 }
 
 /* styling title of time weather */
@@ -22,6 +35,8 @@ html {
     table-layout: auto;
     flex: auto;
     width: 100%;
+    font-size: 20px;
+    font-size: 1.5vw;
 }
 
 #dateTemp thead th{
@@ -56,6 +71,8 @@ html {
     table-layout: auto;
     width: 100%;
     font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    font-size: 1.2vw;
 }
 
 #weatherDetails td {
@@ -67,3 +84,25 @@ html {
     text-align: center;
 }
 
+
+#forecastTableBody {
+    table-layout: auto;
+    width: 100%;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    font-size: 1.2vw;
+}
+
+#forecastTableBody td {
+    padding: 20px;
+    letter-spacing: 1px;
+}
+
+#forecastTableBody tbody td {
+    text-align: center;
+}
+
+.forecast {
+    width: 25%;
+    margin: 0 auto;
+}
