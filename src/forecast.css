@@ -1,0 +1,24 @@
+html {
+    font-family: 'helvetica neue', helvetica, arial, sans-serif;
+}
+
+.tempUnit {
+    content: "\2103";
+}
+
+#forecastTableBody {
+    table-layout: auto;
+    width: 100%;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    font-size: 1.2vw;
+}
+
+#forecastTableBody td {
+    padding: 20px;
+    letter-spacing: 1px;
+}
+
+#forecastTableBody tbody td {
+    text-align: center;
+}
