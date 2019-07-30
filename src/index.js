@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import weatherForecast from './weather';
 import './index.css';
+import Raining from './icons8-rain-cloud-50.png';
 
 
 class LocationOverview extends React.Component {
@@ -48,13 +49,53 @@ class CurrentWeather extends React.Component {
         return(
             <div id="todayWeather">
                 <div id="date">
-                    {this.getWeekDay()}
-                    <span id="today">Today</span>
-                    {this.props.highest}
-                    <span class="tempUnit">&#8451;</span>
-                    <span id="spaces"></span>
-                    {this.props.lowest}
-                    <span class="tempUnit">&#8451;</span>                    
+                    <table id="dateTemp">
+                        <thead>
+                            <th id="weekDay">
+                                {this.getWeekDay()}                                
+                            </th>
+                            <th id="today">
+                                <span>Today</span>
+                            </th>
+                            <th id="highTemp">
+                                {this.props.highest}
+                                <span class="tempUnit">&#8451;</span>
+                            </th>
+                            <th id="lowTemp">
+                                {this.props.lowest}
+                                <span class="tempUnit">&#8451;</span>   
+                            </th>
+                        </thead>
+                    </table>                   
+                </div>
+                <div class="currWeatherLine">
+                    <hr></hr>
+                </div>
+                <div id="timeWeather">
+                    <table id="weatherDetails">
+                        <tbody>
+                            <tr id="time">
+                                <td class="timeStyle">Now</td>
+                                <td class="timeStyle">6PM</td>
+                                <td class="timeStyle">7PM</td>
+                                <td class="timeStyle">8PM</td>
+                                <td class="timeStyle">9PM</td>
+                            </tr>
+                            <tr id="weatherSymbol">
+                                <td class="timeStyle"><img class="weatherIcon" src={Raining} alt="raining" /></td>
+                                <td class="timeStyle"><img class="weatherIcon" src={Raining} alt="raining" /></td>
+                                <td class="timeStyle"><img class="weatherIcon" src={Raining} alt="raining" /></td>
+                                <td class="timeStyle"><img class="weatherIcon" src={Raining} alt="raining" /></td>
+                                <td class="timeStyle"><img class="weatherIcon" src={Raining} alt="raining" /></td>
+                            </tr>
+                            <tr id="speTemp">
+                                <td class="timeStyle">20<span class="tempUnit">&#8451;</span></td>                                
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="currWeatherLine">
+                    <hr></hr>
                 </div>
             </div>
         );

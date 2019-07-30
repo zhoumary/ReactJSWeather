@@ -1,15 +1,69 @@
+html {
+    font-family: 'helvetica neue', helvetica, arial, sans-serif;
+}
+
 .tempUnit{
     content: "\2103";
 }
 
-#todayWeather #today {
-    margin-left: 10px;
-    margin-right: 10px;
+#overviewinfo {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Tangerine', cursive;
+    font-weight: bold;
+    font-size: xx-large;
+    letter-spacing: 1px;
+    text-align: center;
+    margin-bottom: 30px;
 }
 
-#spaces {
-    margin-left: 10px;
+/* styling title of time weather */
+#dateTemp {
+    table-layout: auto;
+    flex: auto;
+    width: 100%;
 }
 
+#dateTemp thead th{
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+}
 
+#dateTemp #weekDay {
+    text-align: left;
+    width: 200px;
+}
+
+#dateTemp #today {
+    text-align: left;
+}
+
+#dateTemp #highTemp {
+    text-align: right;
+}
+
+#dateTemp #lowTemp {
+    text-align: right;
+    width: 200px;
+}
+
+#dateTemp thead th {
+    padding: 5px;
+    letter-spacing: 1px;
+}
+
+/* styling time weather table */
+#weatherDetails{
+    table-layout: auto;
+    width: 100%;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+#weatherDetails td {
+    padding: 20px;
+    letter-spacing: 1px;
+}
+
+#weatherDetails tbody td {
+    text-align: center;
+}
 
