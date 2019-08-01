@@ -2,29 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 // import Forecast from './forecast';
 import './index.css';
-import Raining from './icons8-rain-cloud-50.png';
+import Raining from './rain.png';
 
-
-class LocationOverview extends React.Component {
+const host = "https://api.openweathermap.org/data/2.5/weather";
+const apiKey = "a81a067d035dd84954e1a0d2c907e813";
+class LocationOverview extends React.Component {    
     render() {
         return (
             <div id="overviewinfo">
-                <div id="location">
-                    <div>
-                        {this.props.location}
-                    </div>
-                </div>
-                <div id="overview">
-                    <div>
-                        {this.props.overview}
-                    </div>
-                </div>
-                <div id="temperature">
-                    <div>
-                        {this.props.temperature}
-                        <span class="tempUnit">&#8451;</span>
-                    </div>
-                </div> 
+                {this.props.weatherInfo}
             </div>                      
         );
     }
@@ -69,7 +55,7 @@ class CurrentWeather extends React.Component {
                     </table>                   
                 </div>
                 <div class="currWeatherLine">
-                    <hr></hr>
+                    <hr class="Line"></hr>
                 </div>
                 <div id="timeWeather">
                     <table id="weatherDetails">
@@ -95,7 +81,7 @@ class CurrentWeather extends React.Component {
                     </table>
                 </div>
                 <div class="currWeatherLine">
-                    <hr></hr>
+                    <hr class="Line"></hr>
                 </div>
             </div>
         );
@@ -186,9 +172,59 @@ class Forecast extends React.Component {
 
 
 class Weather extends React.Component {
+    componentDidMount(cityID) {
+        let queryParam = "?id=" + "1815286" + "&APPID=" + apiKey;
+        let url = host + queryParam;
+        if (url) {
+            fetch(url).then(
+                response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error('Request failed');
+                }, networkError => console.log(networkError.message)
+            ).then( jsonResponse => {
+                let div = [];
+
+                let location = jsonResponse.name;
+                div.push(<div id="overview">{location}</div>);
+                
+                let weather = jsonResponse.weather;
+                let weatDesc;
+                if (weather) {
+                    let current = weather[0];
+                    if (current) {
+                        weatDesc = current.main;
+                        div.push(<div id="overview">{weatDesc}</div>);
+                    }                    
+                }                
+
+                let main = jsonResponse.main;
+                let temperature;
+                if (main) {
+                    let test = main.temp;
+                    if (main.temp) {
+                        temperature = tempConversion(main.temp);
+                        div.push(<div id="temperature">{temperature}<span class="tempUnit">&#8451;</span></div>);
+                    }
+                }
+                
+                this.setState({
+                    weatherInfo: div
+                });
+            });
+        }
+    }
+    
+    // componentDidMount() {
+    //     console.log('I am about to say hello');
+    // }    
+    
+    
     constructor(props) {
         super(props);
         this.state = {
+            weatherInfo: null,
             location: "Chengdu",
             overview: "raining",
             temperature: 24,
@@ -197,16 +233,16 @@ class Weather extends React.Component {
         };
     }
 
+    
 
 
-
-    render() {
-        
+    render() {      
 
         return(
             <div id="weather">
                 <div id="locweather">
-                    <LocationOverview location={this.state.location} overview={this.state.overview} temperature={this.state.temperature}/>
+                    <LocationOverview location={this.state.location} overview={this.state.overview} temperature={this.state.temperature}
+                    weatherInfo={this.state.weatherInfo}/>
                 </div>
                 <div id="currweather">
                     <CurrentWeather highest={this.state.highestTemp} lowest={this.state.lowestTemp}/>
@@ -216,7 +252,7 @@ class Weather extends React.Component {
                     
                 </div>
                 <div class="currWeatherLine">
-                    <hr></hr>
+                    <hr class="Line"></hr>
                 </div>                              
             </div>
         );
@@ -227,3 +263,13 @@ ReactDOM.render(
     <Weather />,
     document.getElementById('root')
 );
+
+
+function tempConversion(kTemp) {
+    let cTemp
+    if (kTemp) {
+        cTemp = (kTemp - 273.15).toFixed(2);
+    }
+
+    return cTemp;
+}
