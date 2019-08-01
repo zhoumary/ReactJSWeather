@@ -172,8 +172,13 @@ class Forecast extends React.Component {
 
 
 class Weather extends React.Component {
-    componentDidMount(cityID) {
-        let queryParam = "?id=" + "1815286" + "&APPID=" + apiKey;
+    componentDidMount() {
+        // get current location
+        let cityID = "1815286";
+
+
+        // get current location's weather information        
+        let queryParam = "?id=" + cityID + "&APPID=" + apiKey;
         let url = host + queryParam;
         if (url) {
             fetch(url).then(
@@ -213,21 +218,18 @@ class Weather extends React.Component {
                     weatherInfo: div
                 });
             });
+
+            // get the current day's time weather within one hour
+            
+
         }
-    }
-    
-    // componentDidMount() {
-    //     console.log('I am about to say hello');
-    // }    
+    }   
     
     
     constructor(props) {
         super(props);
         this.state = {
             weatherInfo: null,
-            location: "Chengdu",
-            overview: "raining",
-            temperature: 24,
             highestTemp: 25,
             lowestTemp: 23
         };
@@ -237,12 +239,14 @@ class Weather extends React.Component {
 
 
     render() {      
+        if (!this.state.weatherInfo) {
+            return <div />
+        }
 
         return(
             <div id="weather">
                 <div id="locweather">
-                    <LocationOverview location={this.state.location} overview={this.state.overview} temperature={this.state.temperature}
-                    weatherInfo={this.state.weatherInfo}/>
+                    <LocationOverview  weatherInfo={this.state.weatherInfo}/>
                 </div>
                 <div id="currweather">
                     <CurrentWeather highest={this.state.highestTemp} lowest={this.state.lowestTemp}/>
