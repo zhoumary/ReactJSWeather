@@ -1,15 +1,25 @@
 html {
     font-family: 'helvetica neue', helvetica, arial, sans-serif;
+    background: center / contain no-repeat url("./bkg11.jpg");
+    background-size: cover;
+    color: white; 
 }
 
 .tempUnit{
     content: "\2103";
 }
 
-.currWeatherLine {
+/* .currWeatherLine {
     margin-left: auto;
     margin-right: auto;
     text-align: center;
+    
+} */
+
+hr {
+    color: white;
+    background-color: white;
+    height: 1px;
 }
 
 #overviewinfo {
