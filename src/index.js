@@ -2,10 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 // import Forecast from './forecast';
 import './index.css';
-import Raining from './rain.png';
+import Raining from './weather-rain.png';
+import Clouds from './weather-clouds.png';
+import Thunderstorm from './weather_sunderain.png';
+import defaultBack from './bkg11.jpg'
+import SunderRainBack from './SunderRainBackground.gif';
+import RainBack from './RainBackground.gif';
 
-const host = "https://api.openweathermap.org/data/2.5/weather";
+const host = "https://api.openweathermap.org/data/2.5/";
 const apiKey = "a81a067d035dd84954e1a0d2c907e813";
+var columnCont = 1;
 class LocationOverview extends React.Component {    
     render() {
         return (
@@ -17,6 +23,18 @@ class LocationOverview extends React.Component {
 }
 
 class CurrentWeather extends React.Component {
+    componentDidUpdate() {
+        if (columnCont > 1) {
+            let percent = (100/columnCont).toFixed(2) + '%';
+            let test = this.document;
+            let allTds = document.getElementsByClassName('timeStyle');
+            for (let index = 0; index < allTds.length; index++) {
+                allTds[index].width = percent;  
+            }            
+        }
+    }
+    
+    
     getWeekDay() {
         const day = new Date();
         const weeklyNum = day.getDay();
@@ -58,25 +76,10 @@ class CurrentWeather extends React.Component {
                     <hr class="Line"></hr>
                 </div>
                 <div id="timeWeather">
+                    
                     <table id="weatherDetails">
                         <tbody>
-                            <tr id="time">
-                                <td class="timeStyle" id="firstTime">Now</td>
-                                <td class="timeStyle">6PM</td>
-                                <td class="timeStyle">7PM</td>
-                                <td class="timeStyle">8PM</td>
-                                <td class="timeStyle">9PM</td>
-                            </tr>
-                            <tr id="weatherSymbol">
-                                <td class="timeStyle" id="firstImage"><img class="weatherIcon" src={Raining} alt="raining" /></td>
-                                <td class="timeStyle"><img class="weatherIcon" src={Raining} alt="raining" /></td>
-                                <td class="timeStyle"><img class="weatherIcon" src={Raining} alt="raining" /></td>
-                                <td class="timeStyle"><img class="weatherIcon" src={Raining} alt="raining" /></td>
-                                <td class="timeStyle"><img class="weatherIcon" src={Raining} alt="raining" /></td>
-                            </tr>
-                            <tr id="speTemp">
-                                <td class="timeStyle" id="firstTemp">20<span class="tempUnit">&#8451;</span></td>                                
-                            </tr>
+                            {this.props.timeWeather}
                         </tbody>
                     </table>
                 </div>
@@ -162,7 +165,7 @@ class Forecast extends React.Component {
             <div id="forecastTable">
                 <table id="forecastTableBody">
                     <tbody>
-                        {this.createForecastList(7, 4)}
+                        {this.createForecastList(5, 4)}
                     </tbody>
                 </table>
             </div>
@@ -172,13 +175,27 @@ class Forecast extends React.Component {
 
 
 class Weather extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            weatherInfo: null,
+            currentTemp: null,
+            currentWeather: null,
+            highestTemp: null,
+            lowestTemp: null,
+            timeWeather: null
+        };
+    }
+
     componentDidMount() {
         // get current location
         let cityID = "1815286";
 
 
-        // get current location's weather information        
-        let queryParam = "?id=" + cityID + "&APPID=" + apiKey;
+        /*
+            get current location's weather information  
+        */       
+        let queryParam = "weather?id=" + cityID + "&APPID=" + apiKey;
         let url = host + queryParam;
         if (url) {
             fetch(url).then(
@@ -191,9 +208,11 @@ class Weather extends React.Component {
             ).then( jsonResponse => {
                 let div = [];
 
+                // for getting location
                 let location = jsonResponse.name;
-                div.push(<div id="overview">{location}</div>);
+                div.push(<div id="location">{location}</div>);
                 
+                // for getting overview weather desc
                 let weather = jsonResponse.weather;
                 let weatDesc;
                 if (weather) {
@@ -204,61 +223,177 @@ class Weather extends React.Component {
                     }                    
                 }                
 
+                // for geeting temperature
                 let main = jsonResponse.main;
+                let temp_min;
+                let temp_max;
                 let temperature;
                 if (main) {
-                    let test = main.temp;
                     if (main.temp) {
                         temperature = tempConversion(main.temp);
                         div.push(<div id="temperature">{temperature}<span class="tempUnit">&#8451;</span></div>);
                     }
+                    if (main.temp_min) {
+                        temp_min = tempConversion(main.temp_min);
+                    }
+                    if (main.temp_max) {
+                        temp_max = tempConversion(main.temp_max);
+                    }
                 }
                 
                 this.setState({
-                    weatherInfo: div
+                    weatherInfo: div,
+                    currentWeather: weatDesc,
+                    currentTemp: temperature,
+                    highestTemp: temp_max,
+                    lowestTemp: temp_min
                 });
-            });
-
-            // get the current day's time weather within one hour
-            
-
+            });           
         }
+
+        /*
+            get the current day's time weather within three hours 
+        */ 
+        
+        queryParam = "forecast?id=" + cityID + "&APPID=" + apiKey;
+        url = host + queryParam;
+        if (url) {
+            fetch(url).then(
+                response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error('Request failed');
+                }, networkError => console.log(networkError.message)
+            ).then( jsonResponse => {
+                let tableBody = [];
+                let weatherImage;
+                let weatDescrip;
+                if (this.state.currentWeather) {
+                    weatDescrip = this.state.currentWeather;
+                    weatherImage = weatherConversion(weatDescrip);
+                }
+                tableBody.push(<th><tr><td class="timeStyle">Now</td></tr><tr><td class="timeStyle"><img class="weatherIcon" src={weatherImage} alt={weatDescrip} /></td></tr><tr><td class="timeStyle">{this.state.currentTemp}<span class="tempUnit">&#8451;</span></td></tr></th>);
+
+                let forecasts = jsonResponse.list;
+                let temperature;
+                let isCrossDay = false;
+                let currDate = new Date();
+                let date = currDate.getDate();
+                
+                if (forecasts) {
+                    for (let index = 0; index < forecasts.length; index++) {
+                        let forecast = forecasts[index];
+                        // get hour
+                        let time = forecast.dt;
+                        let dateTime;
+                        let timeHour;
+                        let hour;
+                        let hourTime;
+                        const delta = 12;
+                        let tempDate;
+                        if (time) {
+                            dateTime = new Date(time*1000);
+                            tempDate = dateTime.getDate();
+                            if (date !== tempDate) {
+                                break;
+                            }
+                            columnCont = columnCont + 1;
+                            timeHour = dateTime.getHours();
+                            
+                            if (timeHour > 12) {
+                                hour = (timeHour - delta).toFixed();
+                                if (hour === 12) {
+                                    hourTime = hour.toString() + "PM";
+                                }
+                                hourTime = hour.toString() + "PM";
+                            } else if (timeHour === 12) {
+                                hourTime = timeHour.toString() + "PM";
+                            } else {
+                                hourTime = timeHour.toString() + "AM";
+                            }
+                            
+                        }
+
+                        // get weather desc
+                        let weather = forecast.weather;
+                        let weatDesc;
+                        let weatImage;
+                        if (weather) {
+                            weatDesc = weather[0].main;
+                            if (weatDesc) {
+                                weatImage = weatherConversion(weatDesc);
+                            }
+                        }
+
+                        // get time temperature
+                        let main = forecast.main;
+                        let weatTemp;
+                        if (main) {
+                            weatTemp = tempConversion(main.temp);
+                        }
+
+                        tableBody.push(<th><tr><td class="timeStyle">{hourTime}</td></tr><tr><td class="timeStyle"><img class="weatherIcon" src={weatImage} alt={weatDesc} /></td></tr><tr><td class="timeStyle">{weatTemp}<span class="tempUnit">&#8451;</span></td></tr></th>);
+                        
+                        
+                    }
+                    
+                    
+                }
+                
+                this.setState({
+                    timeWeather: tableBody
+                });
+
+                
+            });           
+        }
+
+        
+              
     }   
     
     
-    constructor(props) {
-        super(props);
-        this.state = {
-            weatherInfo: null,
-            highestTemp: 25,
-            lowestTemp: 23
-        };
-    }
-
-    
-
-
     render() {      
         if (!this.state.weatherInfo) {
             return <div />
         }
 
+        let currBackImage;
+        if (this.state.currentWeather) {
+            let currWeatDesc =  this.state.currentWeather;
+            let weatConvred = currWeatConversion(currWeatDesc);
+            if (weatConvred) {
+                currBackImage = `url(${weatConvred})`; 
+            }            
+        }else{
+            currBackImage = `url(${defaultBack})`;
+        }
+
+        const mainBg = {
+            backgroundImage: currBackImage,
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+        }
+
         return(
-            <div id="weather">
+            <div id="weather" style={mainBg}>
                 <div id="locweather">
                     <LocationOverview  weatherInfo={this.state.weatherInfo}/>
                 </div>
                 <div id="currweather">
-                    <CurrentWeather highest={this.state.highestTemp} lowest={this.state.lowestTemp}/>
+                    <CurrentWeather highest={this.state.highestTemp} lowest={this.state.lowestTemp} timeWeather={this.state.timeWeather}/>
                     <Forecast />
                 </div>
                 <div id="weatherFore">
                     
                 </div>
-                <div class="currWeatherLine">
+                {/* <div class="currWeatherLine">
                     <hr class="Line"></hr>
-                </div>                              
+                </div>                               */}
             </div>
+             
         );
     }
 }
@@ -276,4 +411,41 @@ function tempConversion(kTemp) {
     }
 
     return cTemp;
+}
+
+function weatherConversion(weatherDesc) {
+    let srcImage; 
+    switch (weatherDesc) {
+        case 'Clouds':
+            srcImage = Clouds;
+            return srcImage;
+        case 'Rain':
+            srcImage = Raining; 
+            return srcImage;
+        case 'Thunderstorm':
+            srcImage = Thunderstorm; 
+            return srcImage;
+        
+        default:
+            return null;
+    }
+}
+
+function currWeatConversion(currWeather) {
+    let backImage; 
+    switch (currWeather) {
+        case 'Clouds':
+            backImage = defaultBack;
+            return backImage;
+        case 'Rain':
+            backImage = RainBack; 
+            return backImage;
+        case 'Thunderstorm':
+            backImage = SunderRainBack; 
+            return backImage;
+        
+        default:
+            backImage = defaultBack;
+            return backImage;
+    }
 }
