@@ -1,7 +1,7 @@
 html {
     font-family: 'helvetica neue', helvetica, arial, sans-serif;
-    background: center / contain no-repeat url("./bkg11.jpg");
-    background-size: cover;
+    /* background: center / contain no-repeat;
+    background-size: cover; */
     color: white; 
 }
 
@@ -9,12 +9,17 @@ html {
     content: "\2103";
 }
 
-/* .currWeatherLine {
+.currWeatherLine {
     margin-left: auto;
     margin-right: auto;
     text-align: center;
     
-} */
+}
+
+.weatherIcon {
+    width: 60px;
+    height: 60px;
+}
 
 hr {
     color: white;
@@ -78,7 +83,8 @@ hr {
 
 /* styling time weather table */
 #weatherDetails{
-    table-layout: auto;
+    table-layout: fixed;
+    text-align: center;
     width: 100%;
     font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 18px;
@@ -88,10 +94,11 @@ hr {
 #weatherDetails td {
     padding: 20px;
     letter-spacing: 1px;
+    text-align: center;
 }
 
-#weatherDetails tbody td {
-    text-align: center;
+#weatherDetails th {
+    width: 33.33%;
 }
 
 
