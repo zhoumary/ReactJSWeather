@@ -3,7 +3,7 @@ import Raining from './icons8-rain-cloud-50.png';
 
 import React, { Component } from 'react'
 
-class Forecast extends Component {
+class Forecast extends React.Component {
     getNextWeekDay(i) {
         const day = new Date();
         const weeklyNum = day.getDay();
@@ -25,7 +25,7 @@ class Forecast extends Component {
     renderForeWeather(j, i) {
         if (j === 0) {
             return (
-                <td class="forecast">
+                <td class="forecast" id="weekday">
                     {this.getNextWeekDay(i)}
                 </td>
             );
@@ -77,8 +77,8 @@ class Forecast extends Component {
             <div id="forecastTable">
                 <table id="forecastTableBody">
                     <tbody>
-                        {this.createForecastList(7, 4)}
-                    </tbody>                    
+                        {this.createForecastList(5, 4)}
+                    </tbody>
                 </table>
             </div>
         )

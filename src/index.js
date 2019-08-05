@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import Forecast from './forecast';
+import Forecast from './forecast';
 import './index.css';
 import Raining from './weather-rain.png';
 import Clouds from './weather-clouds.png';
@@ -23,7 +23,7 @@ class LocationOverview extends React.Component {
 }
 
 class CurrentWeather extends React.Component {
-    componentDidUpdate() {
+    componentDidMount() {
         if (columnCont > 1) {
             let percent = (100/columnCont).toFixed(2) + '%';
             let test = this.document;
@@ -90,89 +90,6 @@ class CurrentWeather extends React.Component {
         );
     }
 }
-
-class Forecast extends React.Component {
-    getNextWeekDay(i) {
-        const day = new Date();
-        const weeklyNum = day.getDay();
-        var weekday = new Array(7);
-        weekday[1] = "Monday";
-        weekday[2] = "Tuesday";
-        weekday[3] = "Wednesday";
-        weekday[4] = "Thursday";
-        weekday[5] = "Friday";
-        weekday[6] = "Saturday";
-        weekday[0] = "Sunday";
-        let index = weeklyNum + i + 1;
-        if (index > 6) {
-            index = index % 7;
-        }
-        return weekday[index];
-    }
-
-    renderForeWeather(j, i) {
-        if (j === 0) {
-            return (
-                <td class="forecast" id="weekday">
-                    {this.getNextWeekDay(i)}
-                </td>
-            );
-        } else if (j === 1) {
-            return (
-                <td class="forecast">
-                    <img class="weatherIcon" src={Raining} alt="raining" />
-                </td>
-            );
-        } else if (j === 2) {
-            return (
-                <td class="forecast">
-                    25
-                    <span class="tempUnit">&#8451;</span>
-                </td>
-            );
-        } else if (j === 3) {
-            return (
-                <td class="forecast">
-                    23
-                    <span class="tempUnit">&#8451;</span>
-                </td>
-            );
-        }
-
-    }
-
-    createForecastList(row, column) {
-        let div = [];
-        if (row) {
-            let divCount = 0;
-            for (let i = 0; i < row; i++) {
-                let children = [];
-                //Inner loop to create children
-                for (let j = 0; j < column; j++) {
-                    children.push(this.renderForeWeather(j, i));
-                }
-
-                //Create the parent and add the children
-                div.push(<tr className="forecastRow">{children}</tr>);
-                divCount = divCount + 1;
-            }
-        }
-        return div;
-    }
-
-    render() {
-        return (
-            <div id="forecastTable">
-                <table id="forecastTableBody">
-                    <tbody>
-                        {this.createForecastList(5, 4)}
-                    </tbody>
-                </table>
-            </div>
-        )
-    }
-}
-
 
 class Weather extends React.Component {
     constructor(props) {
@@ -336,8 +253,7 @@ class Weather extends React.Component {
                         tableBody.push(<th><tr><td class="timeStyle">{hourTime}</td></tr><tr><td class="timeStyle"><img class="weatherIcon" src={weatImage} alt={weatDesc} /></td></tr><tr><td class="timeStyle">{weatTemp}<span class="tempUnit">&#8451;</span></td></tr></th>);
                         
                         
-                    }
-                    
+                    }                    
                     
                 }
                 
@@ -347,15 +263,12 @@ class Weather extends React.Component {
 
                 
             });           
-        }
-
-        
-              
+        }      
     }   
     
     
     render() {      
-        if (!this.state.weatherInfo) {
+        if (!this.state.weatherInfo || !this.state.timeWeather) {
             return <div />
         }
 
@@ -377,17 +290,18 @@ class Weather extends React.Component {
             backgroundPosition: 'center'
         }
 
+        let html = document.getElementsByTagName('html')[0];
+        html.style.backgroundImage = currBackImage;
+
+
         return(
-            <div id="weather" style={mainBg}>
+            <div id="weather">
                 <div id="locweather">
                     <LocationOverview  weatherInfo={this.state.weatherInfo}/>
                 </div>
                 <div id="currweather">
                     <CurrentWeather highest={this.state.highestTemp} lowest={this.state.lowestTemp} timeWeather={this.state.timeWeather}/>
                     <Forecast />
-                </div>
-                <div id="weatherFore">
-                    
                 </div>
                 {/* <div class="currWeatherLine">
                     <hr class="Line"></hr>
