@@ -1,11 +1,3 @@
-html {
-    font-family: 'helvetica neue', helvetica, arial, sans-serif;
-}
-
-.tempUnit {
-    content: "\2103";
-}
-
 #forecastTableBody {
     table-layout: auto;
     width: 100%;
@@ -21,4 +13,9 @@ html {
 
 #forecastTableBody tbody td {
     text-align: center;
+}
+
+.forecast {
+    width: 25%;
+    margin: 0 auto;
 }

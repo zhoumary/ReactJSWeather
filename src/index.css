@@ -1,8 +1,12 @@
 html {
     font-family: 'helvetica neue', helvetica, arial, sans-serif;
-    /* background: center / contain no-repeat;
-    background-size: cover; */
+    background: center / contain no-repeat;
+    background-size: cover;
     color: white; 
+}
+
+.body {
+    margin: 0px;
 }
 
 .tempUnit{
@@ -101,25 +105,3 @@ hr {
     width: 33.33%;
 }
 
-
-#forecastTableBody {
-    table-layout: auto;
-    width: 100%;
-    font-family: Verdana, Arial, Helvetica, sans-serif;
-    font-size: 18px;
-    font-size: 1.2vw;
-}
-
-#forecastTableBody td {
-    padding: 20px;
-    letter-spacing: 1px;
-}
-
-#forecastTableBody tbody td {
-    text-align: center;
-}
-
-.forecast {
-    width: 25%;
-    margin: 0 auto;
-}

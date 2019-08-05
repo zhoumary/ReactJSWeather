@@ -1,50 +1,21 @@
-html {
-    font-family: 'helvetica neue', helvetica, arial, sans-serif;
-}
-
-.tempUnit {
-    content: "\2103";
-}
-
-#forecastTable {
-    width: 50%;
-    margin: 0 auto;
-    display: table;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
+#forecastTableBody {
+    table-layout: auto;
+    width: 100%;
     font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 18px;
     font-size: 1.2vw;
 }
 
-#forecastTableCaption {
-    display: table-caption;
-    width: 50%;
-    margin: 0 auto;
+#forecastTableBody td {
+    padding: 20px;
+    letter-spacing: 1px;
 }
 
-#forecastTableBody {
-    display: table-row-group;
-    width: 50%;
-    margin: 0 auto;
-}
-
-.forecastRow {
-    display: table-row;
-    width: 50%;
-    margin: 0 auto;
+#forecastTableBody tbody td {
     text-align: center;
 }
-
 
 .forecast {
-    /* font-size: 18px;
-    font-size: 1.2vw;
-    float: left;
-    text-align: center;
-    letter-spacing: 1px; */
-    display: table-cell;
     width: 25%;
-    margin: 0;
+    margin: 0 auto;
 }
