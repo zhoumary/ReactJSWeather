@@ -1,5 +1,8 @@
 import './weather.css';
-import Raining from './icons8-rain-cloud-50.png';
+import Raining from './weather-rain.png';
+import Clouds from './weather-clouds.png';
+import Thunderstorm from './weather_sunderain.png';
+import Clear from './clear.png';
 
 import React, { Component } from 'react'
 
@@ -25,32 +28,31 @@ class WeatherForecast extends Component {
   renderForeWeather(j, i) {
     if (j === 0) {
       return (
-        <div class="forecast">
+        <td class="forecast" id="weekday">
           {this.getNextWeekDay(i)}
-        </div>
+        </td>
       );
     } else if (j === 1) {
       return (
-        <div class="forecast">
-          <img class="weatherIcon" src={Raining} alt="raining" />
-        </div>
+        <td class="forecast">
+          <img class="weatherIcon" src={Clear} alt="Clear" />
+        </td>
       );
     } else if (j === 2) {
       return (
-        <div class="forecast">
+        <td class="forecast">
           25
           <span class="tempUnit">&#8451;</span>
-        </div>
+        </td>
       );
     } else if (j === 3) {
       return (
-        <div class="forecast">
+        <td class="forecast">
           23
           <span class="tempUnit">&#8451;</span>
-        </div>
+        </td>
       );
-    }
-
+    }    
   }
   
   createForecastList(row, column) {
@@ -65,7 +67,7 @@ class WeatherForecast extends Component {
         }
 
         //Create the parent and add the children
-        div.push(<div className="forecastRow">{children}</div>);
+        div.push(<tr className="forecastRow">{children}</tr>);
         divCount = divCount + 1;
       }
     }
@@ -75,14 +77,13 @@ class WeatherForecast extends Component {
   render() {
     return (
       <div id="forecastTable">
-        {/* <div id="forecastTableCaption">
-          <div id="forecastTableBody"> */}
-        <div id="forecastTableBody"> 
-            {this.createForecastList(7, 4)}
-        </div>
-          {/* </div>          
-        </div> */}
+        <table id="forecastTableBody">
+          <tbody>
+            {this.createForecastList(5, 4)}
+          </tbody>
+        </table>
       </div>
+
     )
   }
 }
