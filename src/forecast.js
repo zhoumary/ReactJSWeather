@@ -1,8 +1,9 @@
-import './weather.css';
-import Raining from './icons8-rain-cloud-50.png';
-
+import './forecast.css';
 import React, { Component } from 'react'
 
+
+const host = "https://api.openweathermap.org/data/2.5/";
+const apiKey = "a81a067d035dd84954e1a0d2c907e813";
 class Forecast extends React.Component {
     getNextWeekDay(i) {
         const day = new Date();
@@ -23,34 +24,35 @@ class Forecast extends React.Component {
     }
 
     renderForeWeather(j, i) {
-        if (j === 0) {
-            return (
-                <td class="forecast" id="weekday">
-                    {this.getNextWeekDay(i)}
-                </td>
-            );
-        } else if (j === 1) {
-            return (
-                <td class="forecast">
-                    <img class="weatherIcon" src={Raining} alt="raining" />
-                </td>
-            );
-        } else if (j === 2) {
-            return (
-                <td class="forecast">
-                    25
-                    <span class="tempUnit">&#8451;</span>
-                </td>
-            );
-        } else if (j === 3) {
-            return (
-                <td class="forecast">
-                    23
-                    <span class="tempUnit">&#8451;</span>
-                </td>
-            );
+        if (this.props.forecastData) {
+            if (j === 0) {
+                return (
+                    <td class="forecast" id="weekday">
+                        {this.getNextWeekDay(i)}
+                    </td>
+                );
+            } else if (j === 1) {
+                return (
+                    <td class="forecast">
+                        <img class="weatherIcon" src={this.props.forecastData[i][j]} alt={this.props.forecastData[i][j - 1]} />
+                    </td>
+                );
+            } else if (j === 2) {
+                return (
+                    <td class="forecast">
+                        {this.props.forecastData[i][j]}
+                        <span class="tempUnit">&#8451;</span>
+                    </td>
+                );
+            } else if (j === 3) {
+                return (
+                    <td class="forecast">
+                        {this.props.forecastData[i][j]}
+                        <span class="tempUnit">&#8451;</span>
+                    </td>
+                );
+            }         
         }
-
     }
 
     createForecastList(row, column) {
@@ -73,6 +75,10 @@ class Forecast extends React.Component {
     }
 
     render() {
+        if (!this.props.forecastData) {
+            return <div />
+        }
+        
         return (
             <div id="forecastTable">
                 <table id="forecastTableBody">
@@ -81,8 +87,10 @@ class Forecast extends React.Component {
                     </tbody>
                 </table>
             </div>
+
         )
     }
 }
+
 
 export default Forecast
